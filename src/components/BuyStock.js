@@ -12,31 +12,43 @@ import {
 import { useForceUpdate } from "../hooks/useForceUpdate";
 
 import { useStocks, useStocksUpdate } from "../context/StocksContext";
+import { useSelector } from "react-redux";
 
 class BuyStock extends React.Component {
-
   render() {
     return (
-      <section>
-        <h1>BuyStock</h1>
-        <div>How many Stonks would you like to buy?</div>
-        <button type="button" onClick={() => {
-            this.props.hanldeAdd();
-          }} name="buy">
-          Buy +
-        </button>
-        {this.props.isLoading ? (
-          this.props.renderLoadingComponent("spinner")
-        ) : (
-          <span>{this.props.counterValue}</span>
-        )}
+      <WithStockConsumer>
+        {(counterState, dispatch) => (
+          <section>
+            <h1>BuyStock</h1>
+            <div>How many Stonks would you like to buy?</div>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({type: 'COUNTER_ADD'})
+              }}
+              name="buy"
+            >
+              Buy +
+            </button>
+            {this.props.isLoading ? (
+              this.props.renderLoadingComponent("spinner")
+            ) : (
+              <span>{counterState}</span>
+            )}
 
-        <button type="button" onClick={() => {
-            this.props.hanldeSub();
-          }} name="sell">
-          Sell -
-        </button>
-      </section>
+            <button
+              type="button"
+              onClick={() => {
+                dispatch({type: 'COUNTER_SUB'})
+              }}
+              name="sell"
+            >
+              Sell -
+            </button>
+          </section>
+        )}
+      </WithStockConsumer>
     );
   }
 }
@@ -51,14 +63,27 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    hanldeAdd: () => dispatch({ type: 'COUNTER_ADD' }),
-    hanldeSub: () => dispatch({ type: 'COUNTER_SUB' }),
+    hanldeAdd: () => dispatch({ type: "COUNTER_ADD" }),
+    hanldeSub: () => dispatch({ type: "COUNTER_SUB" }),
   };
 };
 
 const storeConnect = myconnect(mapStateToProps, mapDispatchToProps);
 
 export default storeConnect(BuyStock);
+
+// const WithStockConsumer = storeConnect(BuyStock)
+
+const WithStockConsumer = (props) => {
+  let counterState = useMySelector((state) => {
+    return state.value;
+  });
+  // console.log(counterState);
+  let dispatch = useMyDispatch();
+  return props.children(counterState, dispatch);
+};
+
+// WithStockConsumer();
 
 // HOC hell
 //const BuyStockContainer = withCounter()(withLoading(BuyStock));
@@ -80,7 +105,6 @@ export default storeConnect(BuyStock);
 // function
 
 export const BuyStockFn = (props) => {
-
   let stocks = useStocks();
   let updateStocks = useStocksUpdate();
 
