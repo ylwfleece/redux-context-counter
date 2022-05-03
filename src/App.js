@@ -2,9 +2,14 @@ import React, { useContext, useState } from "react";
 import Counter, { CounterFn } from "./components/Counter";
 import BuyStock, { BuyStockFn } from "./components/BuyStock";
 import StockCalCulator, {
-  StockCalCulatorFn
+  StockCalCulatorFn,
 } from "./components/StockCalCulator";
 import "./index.css";
+import { StocksProvider } from "./context/StocksContext";
+
+import { Provider } from "react-redux";
+import configureStore from "./store/index";
+const store = configureStore();
 
 const PageInfo = {
   Counter: Counter,
@@ -12,17 +17,17 @@ const PageInfo = {
   StockCalCulator: StockCalCulator,
   CounterFn: CounterFn,
   BuyStockFn: BuyStockFn,
-  StockCalCulatorFn: StockCalCulatorFn
+  StockCalCulatorFn: StockCalCulatorFn,
 };
 
 class App extends React.Component {
   state = {
-    currentPage: "Counter"
+    currentPage: "Counter",
   };
 
   hanldeChangePage = (page) => {
     this.setState({
-      currentPage: page
+      currentPage: page,
     });
   };
 
@@ -33,24 +38,28 @@ class App extends React.Component {
 
   render() {
     return (
-      <section>
-        <header>
-          <nav>
-            {Object.keys(PageInfo).map((page) => {
-              return (
-                <a
-                  key={page}
-                  href="##"
-                  onClick={() => this.hanldeChangePage(page)}
-                >
-                  {page}
-                </a>
-              );
-            })}
-          </nav>
-        </header>
-        <main>{this.getCurrentPage()}</main>
-      </section>
+      <Provider store={store}>
+        <StocksProvider>
+          <section>
+            <header>
+              <nav>
+                {Object.keys(PageInfo).map((page) => {
+                  return (
+                    <a
+                      key={page}
+                      href="##"
+                      onClick={() => this.hanldeChangePage(page)}
+                    >
+                      {page}
+                    </a>
+                  );
+                })}
+              </nav>
+            </header>
+            <main>{this.getCurrentPage()}</main>
+          </section>
+        </StocksProvider>
+      </Provider>
     );
   }
 }

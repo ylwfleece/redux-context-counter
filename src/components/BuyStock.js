@@ -3,6 +3,18 @@ import withCounter, { WithCounterCosumer } from "../HOC/withCounter";
 import withLoading from "../HOC/withLoading";
 import { getDefaultStockCounter } from "../services/stock.api";
 import { useCounter } from "../hooks/useCounter";
+import { mystore } from '../MyRedux/MyRedux';
+import {
+  myconnect,
+  useMySelector,
+  useMyDispatch,
+} from '../MyReactRedux/MyReactRedux';
+import { useForceUpdate } from '../hooks/useForceUpdate';
+
+import { useStocks, useStocksUpdate } from "../context/StocksContext";
+
+
+
 
 class BuyStock extends React.Component {
 
@@ -48,17 +60,28 @@ export default BuyStockContainer;
 // function
 
 export const BuyStockFn = (props) => {
-  const [stock, hanldeBuy, hanldeSell] = useCounter(20);
+  // const [stock, hanldeBuy, hanldeSell] = useCounter(20);
+
+  let stocks = useStocks();
+  let updateStocks = useStocksUpdate(); 
+
+  const removeStock = () => {
+    updateStocks(stocks - 1);
+  }
+
+  const addStock = () => {
+    updateStocks(stocks + 1);
+  }
 
   return (
     <section>
       <h1>BuyStock</h1>
       <div>How many Stonks would you like to buy?</div>
-      <button type="button" onClick={hanldeBuy} name="buy">
+      <button type="button" onClick={addStock} name="buy">
         Buy +
       </button>
-      <span>{stock}</span>
-      <button type="button" onClick={hanldeSell} name="sell">
+      <span>{stocks}</span>
+      <button type="button" onClick={removeStock} name="sell">
         Sell -
       </button>
     </section>
