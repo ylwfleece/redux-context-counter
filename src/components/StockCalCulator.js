@@ -25,8 +25,9 @@ export const StockCalCulatorFn = () => {
 
   const [order, setOrder] = useState(0);
 
-  const updateTotal = () => {
-    setOrder(order);
+  const updateStocksFn = (e) => {
+    let newStocksCount = Number(e.target.value);
+    updateStocks(newStocksCount)
   }
 
   const addOrder = () => {
@@ -40,7 +41,7 @@ export const StockCalCulatorFn = () => {
     <section>
       <h1>Calculator</h1>
       <div>How many stonks do you have?</div>
-      <input placeholder={stocks} type="number" onChange={updateStocks}/>
+      <input placeholder={stocks} type="number" onChange={updateStocksFn}/>
       <div>How many stonks would you like to buy?</div>
       <button onClick={addOrder} type="button">
         Buy +{" "}
