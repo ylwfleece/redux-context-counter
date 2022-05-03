@@ -6,10 +6,10 @@ import StockCalCulator, {
 } from "./components/StockCalCulator";
 import "./index.css";
 import { StocksProvider } from "./context/StocksContext";
+import { Provider } from 'react-redux'
+import configureStore from './store/index'
 
-import { Provider } from "react-redux";
-import configureStore from "./store/index";
-const store = configureStore();
+const store = configureStore()
 
 const PageInfo = {
   Counter: Counter,

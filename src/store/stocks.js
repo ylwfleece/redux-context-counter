@@ -1,5 +1,5 @@
-const REMOVE_STOCK = "application/removeStock";
-const ADD_STOCK = "application/addStock";
+const REMOVE_STOCK = "stock/removeStock";
+const ADD_STOCK = "stock/addStock";
 
 const addStock = () => {
     return {
@@ -27,7 +27,7 @@ const initialState = {
     stocks: 0
 };
 
-const applicationsReducer = (state = initialState, action) => {
+const stocksReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_STOCK:
       return {
@@ -42,4 +42,4 @@ const applicationsReducer = (state = initialState, action) => {
   }
 };
 
-export default applicationsReducer;
+export default stocksReducer;

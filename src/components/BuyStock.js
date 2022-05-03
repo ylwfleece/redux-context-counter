@@ -1,20 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import withCounter, { WithCounterCosumer } from "../HOC/withCounter";
 import withLoading from "../HOC/withLoading";
 import { getDefaultStockCounter } from "../services/stock.api";
 import { useCounter } from "../hooks/useCounter";
-import { mystore } from '../MyRedux/MyRedux';
+import { mystore } from "../MyRedux/MyRedux";
 import {
   myconnect,
   useMySelector,
   useMyDispatch,
-} from '../MyReactRedux/MyReactRedux';
-import { useForceUpdate } from '../hooks/useForceUpdate';
+} from "../MyReactRedux/MyReactRedux";
+import { useForceUpdate } from "../hooks/useForceUpdate";
 
 import { useStocks, useStocksUpdate } from "../context/StocksContext";
-
-
-
 
 class BuyStock extends React.Component {
 
@@ -23,55 +20,77 @@ class BuyStock extends React.Component {
       <section>
         <h1>BuyStock</h1>
         <div>How many Stonks would you like to buy?</div>
-        <button type="button" onClick={this.props.handleIncrement} name="buy">
+        <button type="button" onClick={() => {
+            this.props.hanldeAdd();
+          }} name="buy">
           Buy +
         </button>
         {this.props.isLoading ? (
           this.props.renderLoadingComponent("spinner")
         ) : (
-          <span>{this.props.counter}</span>
+          <span>{this.props.counterValue}</span>
         )}
 
-        <button type="button" onClick={this.props.handleDecrement} name="sell">
+        <button type="button" onClick={() => {
+            this.props.hanldeSub();
+          }} name="sell">
           Sell -
         </button>
       </section>
     );
   }
 }
+
+// export default BuyStock;
+
+const mapStateToProps = (state) => {
+  return {
+    counterValue: state.value,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    hanldeAdd: () => dispatch({ type: 'COUNTER_ADD' }),
+    hanldeSub: () => dispatch({ type: 'COUNTER_SUB' }),
+  };
+};
+
+const storeConnect = myconnect(mapStateToProps, mapDispatchToProps);
+
+export default storeConnect(BuyStock);
+
 // HOC hell
 //const BuyStockContainer = withCounter()(withLoading(BuyStock));
 
-const BuyStockContainer = withLoading((props) => (
-  <WithCounterCosumer defaultCounter={7}>
-    {(counter, handleIncrement, handleDecrement, handleSetCounter) => (
-      <BuyStock
-        {...props}
-        counter={counter}
-        handleIncrement={handleIncrement}
-        handleDecrement={handleDecrement}
-        handleSetCounter={handleSetCounter}
-      />
-    )}
-  </WithCounterCosumer>
-));
-export default BuyStockContainer;
+// const BuyStockContainer = withLoading((props) => (
+//   <WithCounterCosumer defaultCounter={7}>
+//     {(counter, handleIncrement, handleDecrement, handleSetCounter) => (
+//       <BuyStock
+//         {...props}
+//         counter={counter}
+//         handleIncrement={handleIncrement}
+//         handleDecrement={handleDecrement}
+//         handleSetCounter={handleSetCounter}
+//       />
+//     )}
+//   </WithCounterCosumer>
+// ));
 
 // function
 
 export const BuyStockFn = (props) => {
-  // const [stock, hanldeBuy, hanldeSell] = useCounter(20);
 
   let stocks = useStocks();
-  let updateStocks = useStocksUpdate(); 
+  let updateStocks = useStocksUpdate();
 
   const removeStock = () => {
     updateStocks(stocks - 1);
-  }
+  };
 
   const addStock = () => {
     updateStocks(stocks + 1);
-  }
+  };
 
   return (
     <section>

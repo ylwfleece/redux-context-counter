@@ -1,13 +1,46 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { MyProvider } from "./MyReactRedux/MyReactRedux";
+
+import { mycreateStore } from "./MyRedux/MyRedux";
+
+const COUNTER_ADD = "COUNTER_ADD";
+const COUNTER_SUB = "COUNTER_SUB";
+
+export const actionType = {
+  COUNTER_ADD,
+  COUNTER_SUB,
+};
+
+const reducer = (state = { value: 50 }, action) => {
+  switch (action.type) {
+    case actionType.COUNTER_ADD:
+      return {
+        ...state,
+        value: state.value + 1,
+      };
+    case actionType.COUNTER_SUB:
+      return {
+        ...state,
+        value: state.value - 1,
+      };
+    default:
+      return state;
+  }
+};
+
+const store = mycreateStore(reducer);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <MyProvider store={store}>
+      <App />
+    </MyProvider>
   </React.StrictMode>
 );
 
