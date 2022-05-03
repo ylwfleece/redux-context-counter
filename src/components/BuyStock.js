@@ -10,8 +10,8 @@ import {
   useMyDispatch,
 } from "../MyReactRedux/MyReactRedux";
 import { useForceUpdate } from "../hooks/useForceUpdate";
-
-import { useStocks, useStocksUpdate } from "../context/StocksContext";
+import { useStocks } from "../context/StocksContext";
+// import { useStocks, useStocksUpdate } from "../context/StocksContext";
 import { useSelector } from "react-redux";
 
 class BuyStock extends React.Component {
@@ -105,8 +105,9 @@ const WithStockConsumer = (props) => {
 // function
 
 export const BuyStockFn = (props) => {
-  let stocks = useStocks();
-  let updateStocks = useStocksUpdate();
+  let stocks = useStocks().stocks;
+  let updateStocks = useStocks().updateStocks;
+  // let updateStocks = useStocksUpdate();
 
   const removeStock = () => {
     updateStocks(stocks - 1);

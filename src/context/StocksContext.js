@@ -17,11 +17,16 @@ export function StocksProvider({ children }) {
     setStocks(stocks);
   }
 
+
+
   return (
-    <StocksContext.Provider value={stocks}>
-      <StocksUpdateContext.Provider value={updateStocks}>
+    <StocksContext.Provider value={{stocks, updateStocks}}>
         {children}
-      </StocksUpdateContext.Provider>
     </StocksContext.Provider>
+  //   <StocksContext.Provider value={stocks}>
+  //   <StocksUpdateContext.Provider value={updateStocks}>
+  //     {children}
+  //   </StocksUpdateContext.Provider>
+  // </StocksContext.Provider>
   );
 }

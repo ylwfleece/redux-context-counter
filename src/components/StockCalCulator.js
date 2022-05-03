@@ -69,8 +69,9 @@ export default storeConnect(StockCalCulator);
 
 
 export const StockCalCulatorFn = () => {
-  let stocks = useStocks();
-  const updateStocks = useStocksUpdate();
+  let stocks = useStocks().stocks;
+  const updateStocks = useStocks().updateStocks;
+  // const updateStocks = useStocksUpdate();
 
   const [order, setOrder] = useState(0);
 
