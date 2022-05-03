@@ -10,23 +10,41 @@ import {
 import { useForceUpdate } from "../hooks/useForceUpdate";
 
 class StockCalCulator extends React.Component {
-  changeVal(e) {
-    this.props.counterValue = Number(e.target.value)
+
+  constructor(props) {
+    super(props);
+    this.state = {internalValue: this.props.counterValue, order: 0};
   }
+
+  setInternalValue(val) {
+    this.setState({
+      internalValue: val
+    })
+    if (val > this.props.counterValue) {
+      this.props.hanldeAdd();
+    } else if (val < this.props.counterValue) {
+      this.props.hanldeSub();
+    }
+  }
+
+  changeValue = (e) => {
+    this.setInternalValue(Number(e.currentTarget.value));
+  };
+
   render() {
     return (
       <section>
         <h1>Calculator</h1>
         <div>How many stonks do you have?</div>
-        <input value={this.props.counterValue} onChange={this.changeVal} type="number" />
+        <input value={this.state.internalValue} onChange={this.changeValue} type="number" />
         <div>How many stonks would you like to buy?</div>
         <button onClick={() => {
-            this.props.hanldeAdd();
-          }} name="buy" type="button">Buy + </button> {0}
+            this.setState({ ...this.state, order: this.state.order + 1})
+          }} name="buy" type="button">Buy + </button> {this.state.order}
         <button onClick={() => {
-            this.props.hanldeSub();
+            this.setState({ ...this.state, order: this.state.order - 1})
           }} name="sell" type="button">Sell -</button>
-        <div>you will have 0 stonks after your purchase</div>
+        <div>you will have {this.state.order + this.state.internalValue} stonks after your purchase</div>
       </section>
     );
   }
@@ -38,7 +56,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, payload) => {
   return {
     hanldeAdd: () => dispatch({ type: 'COUNTER_ADD' }),
     hanldeSub: () => dispatch({ type: 'COUNTER_SUB' }),
