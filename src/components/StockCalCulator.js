@@ -12,13 +12,13 @@ import { useForceUpdate } from "../hooks/useForceUpdate";
 class StockCalCulator extends React.Component {
   static contextType = StocksContext;
 
-  // constructor(props) {
-  //   super(props);
-  //   console.log(this.context)
-  //   console.log(this.context.stocks)
-
-  //   this.state = {internalValue: this.context.stocks, order: 0};
-  // }
+  constructor(props, context) {
+    super(props, context);
+    console.log(this.context)
+    console.log(this.context.stocks)
+    this.state = {order: 0}
+    // this.state = {internalValue: this.context.stocks, order: 0};
+  }
 
 
   // setInternalValue(val) {
@@ -36,31 +36,20 @@ class StockCalCulator extends React.Component {
   // changeValue = (e) => {
   //   this.setInternalValue(Number(e.currentTarget.value));
   // };
-  log() {console.log(this.context)}
 
-  componentDidMount() {
-    this.log();
-  }
-
-  changeStocks(e) {
-    let newStocks = +e.target.value;
-
-    console.log(this.context);
-    this.context.updateStocks(newStocks);
-  }
 
   render() {
     return (
       <section>
         <h1>Calculator</h1>
         <div>How many stonks do you have?</div>
-        <input value={this.context.stocks} onChange={this.changeStocks} type="number" />
+        <input value={this.context.stocks} onChange={(e) => {this.context.updateStocks(+e.target.value)}} type="number" />
         <div>How many stonks would you like to buy?</div>
-        <button onClick={() => {
-          }} name="buy" type="button">Buy + </button> {1}
-        <button onClick={() => {
-          }} name="sell" type="button">Sell -</button>
-        <div>you will have {1} stonks after your purchase</div>
+        <button onClick={() => {this.setState({ order: this.state.order + 1})
+        }} name="buy" type="button">Buy + </button> {this.state.order}
+        <button onClick={() => {this.setState({ order: this.state.order - 1})
+        }} name="sell" type="button">Sell -</button>
+        <div>you will have {this.state.order + this.context.stocks} stonks after your purchase</div>
       </section>
       // <section>
       //   <h1>Calculator</h1>
