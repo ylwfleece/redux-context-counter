@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-const StocksContext = React.createContext();
+export const StocksContext = React.createContext();
 const StocksUpdateContext = React.createContext();
 
 export function useStocks() {

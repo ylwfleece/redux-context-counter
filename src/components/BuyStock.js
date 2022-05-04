@@ -10,48 +10,78 @@ import {
   useMyDispatch,
 } from "../MyReactRedux/MyReactRedux";
 import { useForceUpdate } from "../hooks/useForceUpdate";
-import { useStocks } from "../context/StocksContext";
+import { StocksProvider, useStocks, StocksContext } from "../context/StocksContext";
 // import { useStocks, useStocksUpdate } from "../context/StocksContext";
 import { useSelector } from "react-redux";
 
 class BuyStock extends React.Component {
   render() {
     return (
-      <WithStockConsumer>
-        {(counterState, dispatch) => (
-          <section>
-            <h1>BuyStock</h1>
-            <div>How many Stonks would you like to buy?</div>
-            <button
-              type="button"
-              onClick={() => {
-                dispatch({type: 'COUNTER_ADD'})
-              }}
-              name="buy"
-            >
-              Buy +
-            </button>
-            {this.props.isLoading ? (
-              this.props.renderLoadingComponent("spinner")
-            ) : (
-              <span>{counterState}</span>
-            )}
-
-            <button
-              type="button"
-              onClick={() => {
-                dispatch({type: 'COUNTER_SUB'})
-              }}
-              name="sell"
-            >
-              Sell -
-            </button>
-          </section>
+      <section>
+        <h1>BuyStock</h1>
+        <div>How many Stonks would you like to buy?</div>
+        <button
+          type="button"
+          onClick={() => {
+            this.context.updateStocks(this.context.stocks + 1)
+          }}
+          name="buy"
+        >
+          Buy +
+        </button>
+        {this.props.isLoading ? (
+          this.props.renderLoadingComponent("spinner")
+        ) : (
+          <span>{this.context.stocks}</span>
         )}
-      </WithStockConsumer>
+
+        <button
+          type="button"
+          onClick={() => {
+            this.context.updateStocks(this.context.stocks - 1)
+          }}
+          name="sell"
+        >
+          Sell -
+        </button>
+      </section>
+      // <WithStockConsumer>
+      //   {(counterState, dispatch) => (
+      //     <section>
+      //       <h1>BuyStock</h1>
+      //       <div>How many Stonks would you like to buy?</div>
+      //       <button
+      //         type="button"
+      //         onClick={() => {
+      //           dispatch({type: 'COUNTER_ADD'})
+      //         }}
+      //         name="buy"
+      //       >
+      //         Buy +
+      //       </button>
+      //       {this.props.isLoading ? (
+      //         this.props.renderLoadingComponent("spinner")
+      //       ) : (
+      //         <span>{counterState}</span>
+      //       )}
+
+      //       <button
+      //         type="button"
+      //         onClick={() => {
+      //           dispatch({type: 'COUNTER_SUB'})
+      //         }}
+      //         name="sell"
+      //       >
+      //         Sell -
+      //       </button>
+      //     </section>
+      //   )}
+      // </WithStockConsumer>
     );
   }
 }
+
+BuyStock.contextType = StocksContext;
 
 // export default BuyStock;
 
